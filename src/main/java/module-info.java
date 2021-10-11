@@ -10,6 +10,6 @@ module eif.viko.lt.zoo {
     requires com.google.auth;
     requires com.google.auth.oauth2;
 
-    opens eif.viko.lt.zoo to javafx.fxml, com.google.gson;
+    opens eif.viko.lt.zoo to javafx.fxml, com.google.gson, firebase.admin;
     exports eif.viko.lt.zoo;
 }

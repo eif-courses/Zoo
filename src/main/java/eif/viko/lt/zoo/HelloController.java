@@ -8,6 +8,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -30,26 +31,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.ResourceBundle;
-
-
+import java.util.*;
+import java.util.concurrent.Future;
 
 
 public class HelloController implements Initializable {
 
 
+    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/pavadinimas");
 
-    DatabaseReference ref = FirebaseDatabase
-            .getInstance()
-            .getReference("/pavadinimas");
-
-    List<Gyvunas> gyvunai  = new ArrayList<>();
+    DatabaseReference refGyvunai = FirebaseDatabase.getInstance().getReference("/gyvunai");
 
 
-    ObservableList<String> items = FXCollections.observableArrayList (
+    List<Gyvunas> gyvunai = new ArrayList<>();
+
+
+    ObservableList<String> items = FXCollections.observableArrayList(
             "Single", "Double", "Suite", "Family App");
 
     @FXML
@@ -74,9 +71,15 @@ public class HelloController implements Initializable {
     @FXML
     void mygtukas_paspaustas(ActionEvent event) {
         mygtukas.setStyle("-fx-background-color:#" + new Random().nextInt(999999));
+
+
+
+
+
+
     }
 
-    public void gyvunuSarasoSudarymas(){
+    public void gyvunuSarasoSudarymas() {
 
         // https://zoo-vilnius-default-rtdb.firebaseio.com/gyvunai.json
 
@@ -98,7 +101,7 @@ public class HelloController implements Initializable {
 
                 sarasas.getItems().clear();
 
-                for(Gyvunas it: gyvunai) {
+                for (Gyvunas it : gyvunai) {
                     sarasas.getItems().add(it);
                 }
                 //sarasas.setItems(gyvunai);
@@ -111,11 +114,6 @@ public class HelloController implements Initializable {
                 System.out.println("DEJA NEPAVYKO GAUTI DUOMENU");
             }
         });
-
-
-
-
-
 
 
 //        Gyvunas tigras = new Gyvunas(
@@ -134,41 +132,74 @@ public class HelloController implements Initializable {
 
     }
 
+    public void addToDB(Gyvunas g){
+        Gyvunas gyvunas = new Gyvunas(g.getPavadinimas(), g.getAprasymas(), g.getPaveikslelis());
+        refGyvunai.push().setValueAsync(gyvunas);
+    }
+
+
+
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
 
 
-        pavadinimas.setText("LABA DIENA");
+        addToDB(new Gyvunas("aw", "aqeawea", "waewarfaw"));// IKELIMAS I DB
+        //Map<String, Gyvunas> list = new HashMap<>();
 
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        // -------------------------------
+
+        refGyvunai.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String res = (String) dataSnapshot.getValue();
-                System.out.println(res);
-                pavadinimas.setText("pav: "+res);
-                randosm.setText(res);
-                informacija.setText(res);
-                pav.setText(res);
+
+                sarasas.getItems().clear();
+
+                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                    Gyvunas g = ds.getValue(Gyvunas.class);
+                    sarasas.getItems().add(g);
+                    System.out.println(g.getPavadinimas());
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                pavadinimas.setText(databaseError.getDetails());
+                System.out.println(databaseError.getMessage());
             }
         });
 
 
 
 
+        pavadinimas.setText("LABA DIENA");
 
-        gyvunuSarasoSudarymas();
+
+//
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                String res = (String) dataSnapshot.getValue();
+//                System.out.println(res);
+//                pavadinimas.setText("pav: "+res);
+//                randosm.setText(res);
+//                informacija.setText(res);
+//                pav.setText(res);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                pavadinimas.setText(databaseError.getDetails());
+//            }
+//        });
+
+
+        //gyvunuSarasoSudarymas();
 
         sarasas.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gyvunas>() {
             @Override
             public void changed(ObservableValue<? extends Gyvunas> observableValue, Gyvunas gyvunas, Gyvunas t1) {
                 informacija.setText(t1.getAprasymas());
-                paveikslelis.setImage(new Image(t1.getPaveikslelis(),  100, 100, false, false));
+                paveikslelis.setImage(new Image(t1.getPaveikslelis(), 100, 100, false, false));
             }
         });
 

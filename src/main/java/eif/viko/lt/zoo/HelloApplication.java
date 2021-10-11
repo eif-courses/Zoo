@@ -18,8 +18,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        FileInputStream serviceAccount =
-                null;
+        FileInputStream serviceAccount = null;
         try {
             serviceAccount = new FileInputStream("D:\\JAVAPROJECTS\\zoo\\src\\main\\resources\\serviceAccountKey.json");
         } catch (FileNotFoundException e) {
