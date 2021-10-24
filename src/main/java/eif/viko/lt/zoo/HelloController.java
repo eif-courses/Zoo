@@ -3,6 +3,9 @@ package eif.viko.lt.zoo;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import com.google.firebase.database.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -11,13 +14,18 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +46,7 @@ import java.util.concurrent.Future;
 public class HelloController implements Initializable {
 
 
-    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("/pavadinimas");
+    DatabaseReference refUsers = FirebaseDatabase.getInstance().getReference("/users");
 
     DatabaseReference refGyvunai = FirebaseDatabase.getInstance().getReference("/gyvunai");
 
@@ -49,12 +57,6 @@ public class HelloController implements Initializable {
     ObservableList<String> items = FXCollections.observableArrayList(
             "Single", "Double", "Suite", "Family App");
 
-    @FXML
-    private TextField pav;
-    @FXML
-    private Label randosm;
-    @FXML
-    private Label pavadinimas;
 
     @FXML
     private Button mygtukas;
@@ -69,12 +71,123 @@ public class HelloController implements Initializable {
     private Label informacija;
 
     @FXML
+    private TextField email;
+
+    @FXML
+    private TextField password;
+
+    @FXML
+    private TextField name;
+
+
+    @FXML
+    private TextField username_login;
+
+    @FXML
+    private TextField password_login;
+
+    @FXML
+    private Text statusas;
+
+
+    // PRSIJUNGIMAS PRIE SISTEMOS
+    FirebaseAuth auth = null;
+    TextInputDialog textInputDialog = null;
+    TextField textField_username = null;
+    TextField textField_password = null;
+    Label label_username = null;
+    Label label_password = null;
+
+    void sign_in_form() {
+        textInputDialog = new TextInputDialog();
+        DialogPane dialog = textInputDialog.getDialogPane();
+
+        label_username = new Label("Enter Username");
+        label_password = new Label("Password");
+        textField_username = new TextField();
+        textField_password = new TextField();
+
+        Button sign_in_button = new Button("Sign in");
+        GridPane root = new GridPane();
+        root.addRow(0, label_username, textField_username);
+        root.addRow(1, label_password, textField_password);
+        root.addRow(2, sign_in_button);
+
+        dialog.setContent(root);
+
+        dialog.getButtonTypes().removeAll(ButtonType.OK, ButtonType.CANCEL);
+
+        textInputDialog.showAndWait();
+
+
+        sign_in_button.setOnAction( actionEvent -> {
+            auth = FirebaseAuth.getInstance();
+
+            UserRecord userByEmail = null;
+            try {
+                userByEmail = auth.getUserByEmail(textField_username.getText());
+            } catch (FirebaseAuthException e) {
+                e.printStackTrace();
+            }
+            if (userByEmail != null) {
+                statusas.setText("Online & Phone number: " + userByEmail.getPhoneNumber());
+            } else {
+                statusas.setText("Offline");
+            }
+
+        });
+
+
+
+
+
+    }
+
+
+    @FXML
+    void sign_in(ActionEvent event) {
+        sign_in_form();
+    }
+
+
+    @FXML
+    private Text information_text;
+
+    @FXML
+    void createUser(ActionEvent event) {
+
+        User testUser = new User();
+
+        UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+                .setEmail(email.getText())
+                .setEmailVerified(testUser.isEmailVerified())
+                .setPassword(password.getText())
+                .setDisplayName(name.getText())
+                .setPhotoUrl(testUser.getPhotoURL())
+                .setDisabled(testUser.isDisabled());
+
+        UserRecord userRecord = null;
+
+        try {
+            userRecord = FirebaseAuth.getInstance().createUser(request);
+        } catch (FirebaseAuthException e) {
+            e.printStackTrace();
+        }finally {
+            assert userRecord != null;
+            refUsers.child(userRecord.getUid()).setValueAsync(testUser);
+        }
+
+        information_text.setText(userRecord.getUid());
+        System.out.println("Successfully created new user: " + userRecord.getUid());
+    }
+
+
+    @FXML
     void mygtukas_paspaustas(ActionEvent event) {
         mygtukas.setStyle("-fx-background-color:#" + new Random().nextInt(999999));
 
 
-
-
+        addToDB(new Gyvunas("aw", "aqeawea", "waewarfaw"));// IKELIMAS I DB
 
 
     }
@@ -132,19 +245,15 @@ public class HelloController implements Initializable {
 
     }
 
-    public void addToDB(Gyvunas g){
+    public void addToDB(Gyvunas g) {
         Gyvunas gyvunas = new Gyvunas(g.getPavadinimas(), g.getAprasymas(), g.getPaveikslelis());
         refGyvunai.push().setValueAsync(gyvunas);
     }
 
 
-
-
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
 
-
-        addToDB(new Gyvunas("aw", "aqeawea", "waewarfaw"));// IKELIMAS I DB
         //Map<String, Gyvunas> list = new HashMap<>();
 
         // -------------------------------
@@ -155,7 +264,7 @@ public class HelloController implements Initializable {
 
                 sarasas.getItems().clear();
 
-                for(DataSnapshot ds: dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     Gyvunas g = ds.getValue(Gyvunas.class);
                     sarasas.getItems().add(g);
                     System.out.println(g.getPavadinimas());
@@ -167,11 +276,6 @@ public class HelloController implements Initializable {
                 System.out.println(databaseError.getMessage());
             }
         });
-
-
-
-
-        pavadinimas.setText("LABA DIENA");
 
 
 //

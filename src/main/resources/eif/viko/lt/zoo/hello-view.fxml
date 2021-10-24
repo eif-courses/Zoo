@@ -10,6 +10,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="406.0" prefWidth="740.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eif.viko.lt.zoo.HelloController">
    <children>
@@ -19,9 +20,9 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="mygtukas" layoutX="15.0" layoutY="318.0" mnemonicParsing="false" onAction="#mygtukas_paspaustas" text="Button" />
-                        <ListView fx:id="sarasas" layoutX="15.0" layoutY="117.0" prefHeight="192.0" prefWidth="245.0" />
-                        <Label fx:id="randosm" layoutX="37.0" layoutY="74.0" text="GYVUNŲ SĄRAŠAS">
+                        <Button fx:id="mygtukas" layoutX="15.0" layoutY="57.0" mnemonicParsing="false" onAction="#mygtukas_paspaustas" text="Sukurti gyvūną" />
+                        <ListView fx:id="sarasas" layoutX="15.0" layoutY="101.0" prefHeight="192.0" prefWidth="245.0" />
+                        <Label fx:id="randosm" layoutX="15.0" layoutY="8.0" prefHeight="35.0" prefWidth="243.0" text="Zoologijos sodas">
                            <font>
                               <Font size="24.0" />
                            </font>
@@ -37,19 +38,37 @@
                            <font>
                               <Font size="20.0" />
                            </font></Label>
-                        <Label fx:id="pavadinimas" layoutX="15.0" layoutY="14.0" prefHeight="35.0" prefWidth="268.0" text="nera" textFill="#331eeb">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="pav" layoutX="14.0" layoutY="45.0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
+          <Tab text="Create User">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TextField fx:id="email" layoutX="32.0" layoutY="34.0" />
+                        <TextField fx:id="password" layoutX="32.0" layoutY="91.0" />
+                        <TextField fx:id="name" layoutX="32.0" layoutY="148.0" />
+                        <Text layoutX="32.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-mail" wrappingWidth="83.123046875" />
+                        <Text layoutX="32.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="83.123046875" />
+                        <Text layoutX="32.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" wrappingWidth="83.123046875" />
+                        <Button layoutX="103.0" layoutY="189.0" mnemonicParsing="false" onAction="#createUser" text="Create User" />
+                        <Text fx:id="information_text" layoutX="32.0" layoutY="258.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font size="32.0" />
+                           </font>
+                        </Text>
+                        <Button layoutX="361.0" layoutY="127.0" mnemonicParsing="false" onAction="#sign_in" text="Sign in" />
+                        <TextField fx:id="username_login" layoutX="265.0" layoutY="34.0" />
+                        <TextField fx:id="password_login" layoutX="265.0" layoutY="91.0" />
+                        <Text layoutX="265.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="83.123046875" />
+                        <Text layoutX="265.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username" wrappingWidth="83.123046875" />
+                        <Text fx:id="statusas" layoutX="265.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text">
+                           <font>
+                              <Font size="32.0" />
+                           </font>
+                        </Text>
+                     </children></AnchorPane>
             </content>
           </Tab>
         </tabs>
