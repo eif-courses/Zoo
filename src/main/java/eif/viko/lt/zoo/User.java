@@ -9,8 +9,7 @@ public class User {
     private boolean isDisabled = false;
     private boolean isEmailVerified = false;
 
-    public User() {
-    }
+    public User() {}
 
     public User(String email, String password, String phone, String photoURL, String displayName, boolean isDisabled, boolean isEmailVerified) {
         this.email = email;
@@ -22,17 +21,16 @@ public class User {
         this.isEmailVerified = isEmailVerified;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", photoURL='" + photoURL + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", isDisabled=" + isDisabled +
-                ", isEmailVerified=" + isEmailVerified +
-                '}';
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getEmail() {
@@ -61,5 +59,18 @@ public class User {
 
     public boolean isEmailVerified() {
         return isEmailVerified;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", photoURL='" + photoURL + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", isDisabled=" + isDisabled +
+                ", isEmailVerified=" + isEmailVerified +
+                '}';
     }
 }

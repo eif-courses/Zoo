@@ -13,6 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
@@ -92,14 +94,16 @@ public class HelloController implements Initializable {
 
     // PRSIJUNGIMAS PRIE SISTEMOS
     FirebaseAuth auth = null;
-    TextInputDialog textInputDialog = null;
     TextField textField_username = null;
     TextField textField_password = null;
     Label label_username = null;
     Label label_password = null;
 
+    TextInputDialog textInputDialog = null;
+
     void sign_in_form() {
         textInputDialog = new TextInputDialog();
+
         DialogPane dialog = textInputDialog.getDialogPane();
 
         label_username = new Label("Enter Username");
@@ -114,11 +118,7 @@ public class HelloController implements Initializable {
         root.addRow(2, sign_in_button);
 
         dialog.setContent(root);
-
-        dialog.getButtonTypes().removeAll(ButtonType.OK, ButtonType.CANCEL);
-
-        textInputDialog.showAndWait();
-
+        dialog.getButtonTypes().removeAll(ButtonType.OK);
 
         sign_in_button.setOnAction( actionEvent -> {
             auth = FirebaseAuth.getInstance();
@@ -130,14 +130,16 @@ public class HelloController implements Initializable {
                 e.printStackTrace();
             }
             if (userByEmail != null) {
-                statusas.setText("Online & Phone number: " + userByEmail.getPhoneNumber());
+                statusas.setText("Online, user id:" + userByEmail.getUid());
             } else {
                 statusas.setText("Offline");
             }
 
         });
 
+        label_username.setOnMouseClicked(mouseEvent -> label_username.setStyle("-fx-background-color: red"));
 
+        textInputDialog.showAndWait();
 
 
 
@@ -165,6 +167,10 @@ public class HelloController implements Initializable {
                 .setDisplayName(name.getText())
                 .setPhotoUrl(testUser.getPhotoURL())
                 .setDisabled(testUser.isDisabled());
+
+        testUser.setEmail(email.getText());
+        testUser.setPassword(password.getText());
+        testUser.setDisplayName(name.getText());
 
         UserRecord userRecord = null;
 
