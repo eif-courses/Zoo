@@ -52,19 +52,25 @@ public class HelloController implements Initializable {
 
     DatabaseReference refGyvunai = FirebaseDatabase.getInstance().getReference("/gyvunai");
 
-
     List<Gyvunas> gyvunai = new ArrayList<>();
-
 
     ObservableList<String> items = FXCollections.observableArrayList(
             "Single", "Double", "Suite", "Family App");
 
 
     @FXML
-    private Button mygtukas;
+    private ImageView profile_image;
 
     @FXML
-    private ListView<Gyvunas> sarasas;
+    private TextArea profile_description;
+
+    @FXML
+    private Text profile_email;
+
+
+    @FXML
+    private Button mygtukas;
+
 
     @FXML
     private ImageView paveikslelis;
@@ -81,32 +87,27 @@ public class HelloController implements Initializable {
     @FXML
     private TextField name;
 
-
-    @FXML
-    private TextField username_login;
-
-    @FXML
-    private TextField password_login;
-
     @FXML
     private Text statusas;
 
 
     // PRSIJUNGIMAS PRIE SISTEMOS
     FirebaseAuth auth = null;
+    // Dialogo langas pradzia
     TextField textField_username = null;
     TextField textField_password = null;
     Label label_username = null;
     Label label_password = null;
-
     TextInputDialog textInputDialog = null;
+    // Dialogo langas pabaiga
+
 
     void sign_in_form() {
         textInputDialog = new TextInputDialog();
 
         DialogPane dialog = textInputDialog.getDialogPane();
 
-        label_username = new Label("Enter Username");
+        label_username = new Label("Username");
         label_password = new Label("Password");
         textField_username = new TextField();
         textField_password = new TextField();
@@ -120,6 +121,11 @@ public class HelloController implements Initializable {
         dialog.setContent(root);
         dialog.getButtonTypes().removeAll(ButtonType.OK);
 
+
+        // IGNORUOTI KIEKVIENA KARTA SUVESTI PRISIJUNGIMO DUOMENIS
+
+        textField_username.setText("m.gzegozevskis@gmail.com");
+
         sign_in_button.setOnAction( actionEvent -> {
             auth = FirebaseAuth.getInstance();
 
@@ -130,7 +136,15 @@ public class HelloController implements Initializable {
                 e.printStackTrace();
             }
             if (userByEmail != null) {
-                statusas.setText("Online, user id:" + userByEmail.getUid());
+
+                Image image = new Image(userByEmail.getPhotoUrl());
+                profile_image.setImage(image);
+                profile_description.setText(userByEmail.getDisplayName());
+                profile_email.setText(userByEmail.getEmail());
+
+                textInputDialog.close();
+
+                //statusas.setText("Online, user id:" + userByEmail.getUid());
             } else {
                 statusas.setText("Offline");
             }
@@ -143,12 +157,6 @@ public class HelloController implements Initializable {
 
 
 
-    }
-
-
-    @FXML
-    void sign_in(ActionEvent event) {
-        sign_in_form();
     }
 
 
@@ -218,11 +226,11 @@ public class HelloController implements Initializable {
                 assert response.body() != null;
                 gyvunai.addAll(response.body());
 
-                sarasas.getItems().clear();
+                //sarasas.getItems().clear();
 
-                for (Gyvunas it : gyvunai) {
-                    sarasas.getItems().add(it);
-                }
+//                for (Gyvunas it : gyvunai) {
+//                    sarasas.getItems().add(it);
+//                }
                 //sarasas.setItems(gyvunai);
 
 
@@ -259,29 +267,29 @@ public class HelloController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-
-        //Map<String, Gyvunas> list = new HashMap<>();
+        sign_in_form();
+        //Map<String, Gyvunas> lis t = new HashMap<>();
 
         // -------------------------------
 
-        refGyvunai.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                sarasas.getItems().clear();
-
-                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    Gyvunas g = ds.getValue(Gyvunas.class);
-                    sarasas.getItems().add(g);
-                    System.out.println(g.getPavadinimas());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                System.out.println(databaseError.getMessage());
-            }
-        });
+//        refGyvunai.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                sarasas.getItems().clear();
+//
+//                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//                    Gyvunas g = ds.getValue(Gyvunas.class);
+//                    sarasas.getItems().add(g);
+//                    System.out.println(g.getPavadinimas());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                System.out.println(databaseError.getMessage());
+//            }
+//        });
 
 
 //
@@ -305,13 +313,13 @@ public class HelloController implements Initializable {
 
         //gyvunuSarasoSudarymas();
 
-        sarasas.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gyvunas>() {
-            @Override
-            public void changed(ObservableValue<? extends Gyvunas> observableValue, Gyvunas gyvunas, Gyvunas t1) {
-                informacija.setText(t1.getAprasymas());
-                paveikslelis.setImage(new Image(t1.getPaveikslelis(), 100, 100, false, false));
-            }
-        });
+//        sarasas.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Gyvunas>() {
+//            @Override
+//            public void changed(ObservableValue<? extends Gyvunas> observableValue, Gyvunas gyvunas, Gyvunas t1) {
+//                informacija.setText(t1.getAprasymas());
+//                paveikslelis.setImage(new Image(t1.getPaveikslelis(), 100, 100, false, false));
+//            }
+//        });
 
 
     }
