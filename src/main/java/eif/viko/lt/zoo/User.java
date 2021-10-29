@@ -1,76 +1,106 @@
 package eif.viko.lt.zoo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
     private String email = "user@example.com";
     private String password = "secretPassword";
     private String phone = "+11234567890";
-    private String photoURL = "http://www.example.com/12345678/photo.png";
+    private String photoURL = "https://www.colourbox.com/preview/12863178-profile-icon-male-avatar-portrait-casual-person.jpg";
     private String displayName = "John Doe";
     private boolean isDisabled = false;
     private boolean isEmailVerified = false;
 
-    public User() {}
+    private List<Animal> animal;
 
-    public User(String email, String password, String phone, String photoURL, String displayName, boolean isDisabled, boolean isEmailVerified) {
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.photoURL = photoURL;
-        this.displayName = displayName;
-        this.isDisabled = isDisabled;
-        this.isEmailVerified = isEmailVerified;
+
+    public User() {
+        animal = new ArrayList<>();
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void loadRandomAnimals() {
+        String names[] = {"aardvark",
+                "albatross",
+                "alligator",
+                "alpaca",
+                "ant",
+                "anteater",
+                "antelope",
+                "ape",
+                "armadillo",
+                "herd",
+                "baboon",
+                "badger",
+                "barracuda",
+                "bat",
+                "bear",
+                "beaver",
+                "bee",
+                "bison",
+                "boar",
+                "galago",
+                "butterfly",
+                "camel",
+                "caribou",
+                "cat",
+                "caterpillar",
+                "cattle",
+                "chamois",
+                "cheetah",
+                "chicken"};
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+        public void setEmail (String email){
+            this.email = email;
+        }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
+        public void setPassword (String password){
+            this.password = password;
+        }
 
-    public String getEmail() {
-        return email;
-    }
+        public void setDisplayName (String displayName){
+            this.displayName = displayName;
+        }
 
-    public String getPassword() {
-        return password;
-    }
+        public String getEmail () {
+            return email;
+        }
 
-    public String getPhone() {
-        return phone;
-    }
+        public String getPassword () {
+            return password;
+        }
 
-    public String getPhotoURL() {
-        return photoURL;
-    }
+        public String getPhone () {
+            return phone;
+        }
 
-    public String getDisplayName() {
-        return displayName;
-    }
+        public String getPhotoURL () {
+            return photoURL;
+        }
 
-    public boolean isDisabled() {
-        return isDisabled;
-    }
+        public String getDisplayName () {
+            return displayName;
+        }
 
-    public boolean isEmailVerified() {
-        return isEmailVerified;
-    }
+        public boolean isDisabled () {
+            return isDisabled;
+        }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", phone='" + phone + '\'' +
-                ", photoURL='" + photoURL + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", isDisabled=" + isDisabled +
-                ", isEmailVerified=" + isEmailVerified +
-                '}';
+        public boolean isEmailVerified () {
+            return isEmailVerified;
+        }
+
+        @Override
+        public String toString () {
+            return "User{" +
+                    "email='" + email + '\'' +
+                    ", password='" + password + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", photoURL='" + photoURL + '\'' +
+                    ", displayName='" + displayName + '\'' +
+                    ", isDisabled=" + isDisabled +
+                    ", isEmailVerified=" + isEmailVerified +
+                    '}';
+        }
     }
-}
