@@ -126,7 +126,7 @@ public class HelloController implements Initializable {
 
         textField_username.setText("m.gzegozevskis@gmail.com");
 
-        sign_in_button.setOnAction( actionEvent -> {
+        sign_in_button.setOnAction(actionEvent -> {
             auth = FirebaseAuth.getInstance();
 
             UserRecord userByEmail = null;
@@ -142,8 +142,28 @@ public class HelloController implements Initializable {
                 profile_description.setText(userByEmail.getDisplayName());
                 profile_email.setText(userByEmail.getEmail());
 
-                textInputDialog.close();
 
+
+
+                DatabaseReference dbref = refUsers.child(userByEmail.getUid() + "/animals");
+
+                System.out.println(dbref.getPath());
+
+                dbref.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            Animal animal = ds.getValue(Animal.class);
+                            System.out.println(animal.getName());
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        System.out.println(databaseError.getMessage());
+                    }
+                });
+
+                textInputDialog.close();
                 //statusas.setText("Online, user id:" + userByEmail.getUid());
             } else {
                 statusas.setText("Offline");
@@ -154,7 +174,6 @@ public class HelloController implements Initializable {
         label_username.setOnMouseClicked(mouseEvent -> label_username.setStyle("-fx-background-color: red"));
 
         textInputDialog.showAndWait();
-
 
 
     }
@@ -176,6 +195,7 @@ public class HelloController implements Initializable {
                 .setPhotoUrl(testUser.getPhotoURL())
                 .setDisabled(testUser.isDisabled());
 
+
         testUser.setEmail(email.getText());
         testUser.setPassword(password.getText());
         testUser.setDisplayName(name.getText());
@@ -186,7 +206,7 @@ public class HelloController implements Initializable {
             userRecord = FirebaseAuth.getInstance().createUser(request);
         } catch (FirebaseAuthException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             assert userRecord != null;
             refUsers.child(userRecord.getUid()).setValueAsync(testUser);
         }
@@ -268,6 +288,8 @@ public class HelloController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         sign_in_form();
+
+
         //Map<String, Gyvunas> lis t = new HashMap<>();
 
         // -------------------------------

@@ -1,7 +1,6 @@
 package eif.viko.lt.zoo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class User {
     private String email = "user@example.com";
@@ -10,16 +9,15 @@ public class User {
     private String photoURL = "https://www.colourbox.com/preview/12863178-profile-icon-male-avatar-portrait-casual-person.jpg";
     private String displayName = "John Doe";
     private boolean isDisabled = false;
-    private boolean isEmailVerified = false;
-
-    private List<Animal> animal;
-
+    private final boolean isEmailVerified = false;
+    private List<Animal> animals = new ArrayList<>();
 
     public User() {
-        animal = new ArrayList<>();
+        loadRandomAnimals();
     }
 
     public void loadRandomAnimals() {
+
         String names[] = {"aardvark",
                 "albatross",
                 "alligator",
@@ -49,9 +47,34 @@ public class User {
                 "chamois",
                 "cheetah",
                 "chicken"};
+
+
+
+        List<String> randomAnimalName;
+        randomAnimalName = Arrays.asList(names);
+
+
+        for (int i = 0; i < 5; i++) {
+            Collections.shuffle(randomAnimalName);
+            Animal randAnimal = new Animal(
+                    randomAnimalName.get(0),
+                    "No description",
+                    "https://picsum.photos/200/300",
+                    false,
+                    false,
+                    false
+            );
+
+            animals.add(randAnimal);
+        }
     }
 
-        public void setEmail (String email){
+
+    public List<Animal> getAnimals() {
+        return animals;
+    }
+
+    public void setEmail (String email){
             this.email = email;
         }
 
