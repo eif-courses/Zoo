@@ -8,6 +8,9 @@ public class Animal {
     private boolean isHungry;
     private boolean isHere;
 
+    public Animal() {
+    }
+
     public Animal(String name, String description, String imageURL, boolean isCleaned, boolean isHungry, boolean isHere) {
         this.name = name;
         this.description = description;
