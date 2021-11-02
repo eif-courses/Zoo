@@ -19,6 +19,17 @@ import java.util.*;
 
 public class HelloController implements Initializable {
 
+
+    private final Image IMAGE_RUBY  = new Image("https://upload.wikimedia.org/wikipedia/commons/f/f1/Ruby_logo_64x64.png");
+    private final Image IMAGE_APPLE  = new Image("http://findicons.com/files/icons/832/social_and_web/64/apple.png");
+    private final Image IMAGE_VISTA  = new Image("http://antaki.ca/bloom/img/windows_64x64.png");
+    private final Image IMAGE_TWITTER = new Image("http://files.softicons.com/download/social-media-icons/fresh-social-media-icons-by-creative-nerds/png/64x64/twitter-bird.png");
+
+    private Image[] listOfImages = {IMAGE_RUBY, IMAGE_APPLE, IMAGE_VISTA, IMAGE_TWITTER};
+
+
+
+
     FirebaseAuth auth = null;
     DatabaseReference refUsers = FirebaseDatabase.getInstance().getReference("/users");
 
@@ -35,8 +46,6 @@ public class HelloController implements Initializable {
     @FXML
     private ImageView profile_image;
     @FXML
-    private TextArea profile_description;
-    @FXML
     private Text profile_email;
     @FXML
     private TextField email;
@@ -46,9 +55,11 @@ public class HelloController implements Initializable {
     private TextField name;
     @FXML
     private Text statusas;
-
+    @FXML
+    private ListView<Animal> animals_listview;
 
     void sign_in_form() {
+
         textInputDialog = new TextInputDialog();
 
         DialogPane dialog = textInputDialog.getDialogPane();
@@ -67,7 +78,6 @@ public class HelloController implements Initializable {
         dialog.setContent(root);
         dialog.getButtonTypes().removeAll(ButtonType.OK);
 
-
         // IGNORUOTI KIEKVIENA KARTA SUVESTI PRISIJUNGIMO DUOMENIS
 
         textField_username.setText("m.gzegozevskis@gmail.com");
@@ -85,7 +95,7 @@ public class HelloController implements Initializable {
 
                 Image image = new Image(userByEmail.getPhotoUrl());
                 profile_image.setImage(image);
-                profile_description.setText(userByEmail.getDisplayName());
+                //profile_description.setText(userByEmail.getDisplayName());
                 profile_email.setText(userByEmail.getEmail());
 
                 DatabaseReference dbref = refUsers.child(userByEmail.getUid() + "/animals");
@@ -93,8 +103,10 @@ public class HelloController implements Initializable {
                 dbref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        animals_listview.getItems().clear();
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                             Animal animal = ds.getValue(Animal.class);
+                            animals_listview.getItems().add(animal);
                             System.out.println(animal.getName());
                         }
                     }
@@ -112,7 +124,6 @@ public class HelloController implements Initializable {
 
         label_username.setOnMouseClicked(mouseEvent -> label_username.setStyle("-fx-background-color: red"));
         textInputDialog.showAndWait();
-
 
     }
 
@@ -153,5 +164,6 @@ public class HelloController implements Initializable {
     }
     public void initialize(URL url, ResourceBundle resourceBundle) {
         sign_in_form();
+
     }
 }

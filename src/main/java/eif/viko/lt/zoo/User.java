@@ -8,9 +8,9 @@ public class User {
     private String phone = "+11234567890";
     private String photoURL = "https://www.colourbox.com/preview/12863178-profile-icon-male-avatar-portrait-casual-person.jpg";
     private String displayName = "John Doe";
-    private boolean isDisabled = false;
+    private final boolean isDisabled = false;
     private final boolean isEmailVerified = false;
-    private List<Animal> animals = new ArrayList<>();
+    private final List<Animal> animals = new ArrayList<>();
 
     public User() {
         loadRandomAnimals();
@@ -18,7 +18,7 @@ public class User {
 
     public void loadRandomAnimals() {
 
-        String names[] = {"aardvark",
+        List<String> names = new ArrayList<>(Arrays.asList("aardvark",
                 "albatross",
                 "alligator",
                 "alpaca",
@@ -46,18 +46,11 @@ public class User {
                 "cattle",
                 "chamois",
                 "cheetah",
-                "chicken"};
-
-
-
-        List<String> randomAnimalName;
-        randomAnimalName = Arrays.asList(names);
-
-
+                "chicken"));
         for (int i = 0; i < 5; i++) {
-            Collections.shuffle(randomAnimalName);
+            Collections.shuffle(names);
             Animal randAnimal = new Animal(
-                    randomAnimalName.get(0),
+                    names.get(0),
                     "No description",
                     "https://picsum.photos/200/300",
                     false,
