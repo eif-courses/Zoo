@@ -54,7 +54,7 @@ public class User {
             Animal randAnimal = new Animal(
                     names.get(0),
                     "No description",
-                    "https://picsum.photos/200/300",
+                    "https://apilist.fun/out/randomcat",
                     new Random().nextBoolean(),
                     new Random().nextBoolean(),
                     new Random().nextBoolean()
