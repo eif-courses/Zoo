@@ -109,6 +109,10 @@ public class HelloController implements Initializable {
                             animals_listview.getItems().add(animal);
                             System.out.println(animal.getName());
                         }
+                        animals_listview.setOnMouseClicked(e->{
+                            Animal animal = animals_listview.getSelectionModel().getSelectedItem();
+                            System.out.println(animal.getName());
+                        });
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
