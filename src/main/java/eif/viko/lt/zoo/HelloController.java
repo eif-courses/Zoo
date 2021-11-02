@@ -12,9 +12,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+
 import java.net.URL;
 import java.util.*;
-
 
 
 public class HelloController implements Initializable {
@@ -22,7 +22,7 @@ public class HelloController implements Initializable {
 
     FirebaseAuth auth = null;
     DatabaseReference refUsers = FirebaseDatabase.getInstance().getReference("/users");
-
+    DatabaseReference dbref = null;
     // Dialogo lango Objektai
 
     TextField textField_username = null;
@@ -47,6 +47,20 @@ public class HelloController implements Initializable {
     private Text statusas;
     @FXML
     private ListView<Animal> animals_listview;
+    @FXML
+    private Text animal_name;
+    @FXML
+    private ImageView animal_image;
+    @FXML
+    private Text animal_description;
+    @FXML
+    private CheckBox animal_cleaned;
+    @FXML
+    private CheckBox animal_hungry;
+    @FXML
+    private CheckBox animal_here;
+    @FXML
+    private CheckBox animal_total_results_checkbox;
 
     void sign_in_form() {
 
@@ -78,17 +92,14 @@ public class HelloController implements Initializable {
             UserRecord userByEmail = null;
             try {
                 userByEmail = auth.getUserByEmail(textField_username.getText());
+                dbref = refUsers.child(userByEmail.getUid() + "/animals");
             } catch (FirebaseAuthException e) {
                 e.printStackTrace();
             }
             if (userByEmail != null) {
-
                 Image image = new Image(userByEmail.getPhotoUrl());
                 profile_image.setImage(image);
-                //profile_description.setText(userByEmail.getDisplayName());
                 profile_email.setText(userByEmail.getEmail());
-
-                DatabaseReference dbref = refUsers.child(userByEmail.getUid() + "/animals");
 
                 dbref.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -97,13 +108,18 @@ public class HelloController implements Initializable {
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                             Animal animal = ds.getValue(Animal.class);
                             animals_listview.getItems().add(animal);
-                            System.out.println(animal.getName());
                         }
-                        animals_listview.setOnMouseClicked(e->{
-                            Animal animal = animals_listview.getSelectionModel().getSelectedItem();
-                            System.out.println(animal.getName());
+                        animals_listview.setOnMouseClicked(e -> {
+                           Animal animal = animals_listview.getSelectionModel().getSelectedItem();
+                            animal_name.setText(animal.getName());
+                            animal_image.setImage(new Image(animal.getImageURL()));
+                            animal_description.setText(animal.getDescription());
+                            animal_cleaned.setSelected(animal.isCleaned());
+                            animal_hungry.setSelected(animal.isHungry());
+                            animal_here.setSelected(animal.isHere());
                         });
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         System.out.println(databaseError.getMessage());
@@ -156,8 +172,10 @@ public class HelloController implements Initializable {
         information_text.setText(userRecord.getUid());
         System.out.println("Successfully created new user: " + userRecord.getUid());
     }
+
     public void initialize(URL url, ResourceBundle resourceBundle) {
         sign_in_form();
 
+        animal_total_results_checkbox.setDisable(true);
     }
 }

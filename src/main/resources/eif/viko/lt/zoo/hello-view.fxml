@@ -2,18 +2,22 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="765.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eif.viko.lt.zoo.HelloController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="765.0" prefHeight="472.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eif.viko.lt.zoo.HelloController">
    <children>
       <VBox layoutY="-3.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -40,7 +44,35 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0">
                            <children>
-                              <ListView fx:id="animals_listview" layoutX="14.0" layoutY="14.0" prefHeight="218.0" prefWidth="153.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                              <ListView fx:id="animals_listview" layoutX="14.0" layoutY="14.0" prefHeight="279.0" prefWidth="200.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                              <VBox alignment="TOP_CENTER" layoutX="233.0" layoutY="14.0" prefHeight="279.0" prefWidth="169.0">
+                                 <children>
+                                    <Text fx:id="animal_name" strokeType="OUTSIDE" strokeWidth="0.0" text="Animal name" textAlignment="CENTER" wrappingWidth="110.580078125">
+                                       <font>
+                                          <Font size="18.0" />
+                                       </font>
+                                    </Text>
+                                    <ImageView fx:id="animal_image" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" />
+                                    <Text fx:id="animal_description" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" />
+                                    <GridPane>
+                                      <columnConstraints>
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                      </columnConstraints>
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                       <children>
+                                          <CheckBox fx:id="animal_cleaned" mnemonicParsing="false" text="isCleaned" GridPane.rowIndex="1" />
+                                          <CheckBox fx:id="animal_hungry" mnemonicParsing="false" text="isHungry" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                          <CheckBox fx:id="animal_here" mnemonicParsing="false" text="isHere" GridPane.rowIndex="2" />
+                                          <CheckBox fx:id="animal_total_results_checkbox" mnemonicParsing="false" text="done" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </VBox>
                            </children>
                         </AnchorPane>
                   </content>
