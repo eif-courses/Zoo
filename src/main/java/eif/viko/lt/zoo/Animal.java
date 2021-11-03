@@ -1,22 +1,32 @@
 package eif.viko.lt.zoo;
 
 public class Animal {
+    private int index;
     private String name;
     private String description;
     private String imageURL;
-    private boolean cleaned;
-    private boolean hungry;
-    private boolean here;
+    private boolean isCleaned;
+    private boolean isHungry;
+    private boolean isHere;
 
     public Animal() {}
 
-    public Animal(String name, String description, String imageURL, boolean cleaned, boolean hungry, boolean here) {
+    public Animal(int index, String name, String description, String imageURL, boolean isCleaned, boolean isHungry, boolean isHere) {
+        this.index = index;
         this.name = name;
         this.description = description;
         this.imageURL = imageURL;
-        this.cleaned = cleaned;
-        this.hungry = hungry;
-        this.here = here;
+        this.isCleaned = isCleaned;
+        this.isHungry = isHungry;
+        this.isHere = isHere;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public String getName() {
@@ -44,27 +54,27 @@ public class Animal {
     }
 
     public boolean isCleaned() {
-        return cleaned;
+        return isCleaned;
     }
 
     public void setCleaned(boolean cleaned) {
-        this.cleaned = cleaned;
+        isCleaned = cleaned;
     }
 
     public boolean isHungry() {
-        return hungry;
+        return isHungry;
     }
 
     public void setHungry(boolean hungry) {
-        this.hungry = hungry;
+        isHungry = hungry;
     }
 
     public boolean isHere() {
-        return here;
+        return isHere;
     }
 
     public void setHere(boolean here) {
-        this.here = here;
+        isHere = here;
     }
 
     @Override
@@ -73,9 +83,9 @@ public class Animal {
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", imageURL='" + imageURL + '\'' +
-                ", cleaned=" + cleaned +
-                ", hungry=" + hungry +
-                ", here=" + here +
+                ", isCleaned=" + isCleaned +
+                ", isHungry=" + isHungry +
+                ", isHere=" + isHere +
                 '}';
     }
 }

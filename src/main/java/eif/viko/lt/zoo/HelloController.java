@@ -5,11 +5,13 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 import com.google.firebase.database.*;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
@@ -175,7 +177,16 @@ public class HelloController implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         sign_in_form();
-
+        profile_email.setOnMouseClicked(x -> sign_in_form());
         animal_total_results_checkbox.setDisable(true);
+
+        Map<String, Object> userUpdates = new HashMap<>();
+        animal_cleaned.setOnAction(e->{
+            Animal animal = animals_listview.getSelectionModel().getSelectedItem();
+            animal.setCleaned(!animal.isCleaned());
+            userUpdates.put(String.valueOf(animal.getIndex()), animal);
+            dbref.updateChildrenAsync(userUpdates);
+        });
+
     }
 }

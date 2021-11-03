@@ -52,9 +52,10 @@ public class User {
         for (int i = 0; i < 5; i++) {
             Collections.shuffle(names);
             Animal randAnimal = new Animal(
+                    i,
                     names.get(0),
                     "No description",
-                    "https://apilist.fun/out/randomcat",
+                    "https://picsum.photos/200/300",
                     new Random().nextBoolean(),
                     new Random().nextBoolean(),
                     new Random().nextBoolean()
