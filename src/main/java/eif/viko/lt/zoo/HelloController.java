@@ -14,6 +14,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import org.controlsfx.control.Notifications;
+import org.controlsfx.control.Rating;
 
 import java.net.URL;
 import java.util.*;
@@ -63,8 +65,15 @@ public class HelloController implements Initializable {
     private CheckBox animal_here;
     @FXML
     private CheckBox animal_total_results_checkbox;
+    @FXML
+    private Rating animal_rating;
+
 
     void sign_in_form() {
+
+
+        //TODO igyvendinti Notifications.create().title("Weaweaweaw").text("Sekmingai prisijungeme!").darkStyle().show();
+
 
         textInputDialog = new TextInputDialog();
 
@@ -99,6 +108,8 @@ public class HelloController implements Initializable {
                 e.printStackTrace();
             }
             if (userByEmail != null) {
+
+
                 Image image = new Image(userByEmail.getPhotoUrl());
                 profile_image.setImage(image);
                 profile_email.setText(userByEmail.getEmail());
@@ -106,19 +117,21 @@ public class HelloController implements Initializable {
                 dbref.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        animals_listview.getItems().clear();
+                        //animals_listview.getItems().clear();
                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
                             Animal animal = ds.getValue(Animal.class);
                             animals_listview.getItems().add(animal);
                         }
                         animals_listview.setOnMouseClicked(e -> {
                            Animal animal = animals_listview.getSelectionModel().getSelectedItem();
-                            animal_name.setText(animal.getName());
-                            animal_image.setImage(new Image(animal.getImageURL()));
-                            animal_description.setText(animal.getDescription());
-                            animal_cleaned.setSelected(animal.isCleaned());
-                            animal_hungry.setSelected(animal.isHungry());
-                            animal_here.setSelected(animal.isHere());
+                            if(animal != null) {
+                                animal_name.setText(animal.getName());
+                                animal_image.setImage(new Image(animal.getImageURL()));
+                                animal_description.setText(animal.getDescription());
+                                animal_cleaned.setSelected(animal.isCleaned());
+                                animal_hungry.setSelected(animal.isHungry());
+                                animal_here.setSelected(animal.isHere());
+                            }
                         });
                     }
 
@@ -138,6 +151,8 @@ public class HelloController implements Initializable {
         textInputDialog.showAndWait();
 
     }
+
+
 
     @FXML
     private Text information_text;
@@ -176,6 +191,17 @@ public class HelloController implements Initializable {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        // CONTROLS FX DOKUMENTACIJA
+        // https://github.com/controlsfx/controlsfx/wiki/ControlsFX-Features
+
+
+
+
+
+        animals_listview.setCellFactory(param-> new AnimalCell());
+
+
         sign_in_form();
         profile_email.setOnMouseClicked(x -> sign_in_form());
         animal_total_results_checkbox.setDisable(true);
@@ -190,3 +216,23 @@ public class HelloController implements Initializable {
 
     }
 }
+
+class AnimalCell extends ListCell<Animal>{
+    private ImageView imageView = new ImageView();
+
+    @Override
+    protected void updateItem(Animal item, boolean empty) {
+        super.updateItem(item, empty);
+
+        if (empty || item == null) {
+            imageView.setImage(null);
+            setGraphic(null);
+            setText(null);
+        } else {
+            imageView.setImage(new Image(item.getImageURL(), 0, 64, true, true));
+            setText(item.getName());
+            setGraphic(imageView);
+        }
+    }
+}
+

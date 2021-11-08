@@ -16,6 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import org.controlsfx.control.Rating?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="765.0" prefHeight="472.0" prefWidth="765.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="eif.viko.lt.zoo.HelloController">
    <children>
@@ -44,8 +45,8 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0">
                            <children>
-                              <ListView fx:id="animals_listview" layoutX="14.0" layoutY="14.0" prefHeight="279.0" prefWidth="200.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
-                              <VBox alignment="TOP_CENTER" layoutX="233.0" layoutY="14.0" prefHeight="279.0" prefWidth="169.0">
+                              <ListView fx:id="animals_listview" layoutX="14.0" layoutY="14.0" prefHeight="279.0" prefWidth="324.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                              <VBox alignment="TOP_CENTER" layoutX="361.0" layoutY="14.0" prefHeight="279.0" prefWidth="169.0">
                                  <children>
                                     <Text fx:id="animal_name" strokeType="OUTSIDE" strokeWidth="0.0" text="Animal name" textAlignment="CENTER" wrappingWidth="110.580078125">
                                        <font>
@@ -73,6 +74,7 @@
                                     </GridPane>
                                  </children>
                               </VBox>
+                              <Rating fx:id="animal_rating" layoutX="26.0" layoutY="317.0" />
                            </children>
                         </AnchorPane>
                   </content>
