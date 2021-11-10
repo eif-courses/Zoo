@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -75,6 +76,7 @@
                                  </children>
                               </VBox>
                               <Rating fx:id="animal_rating" layoutX="26.0" layoutY="317.0" />
+                              <ToggleButton layoutX="227.0" layoutY="321.0" mnemonicParsing="false" onAction="#enable_notifications" text="Notify" />
                            </children>
                         </AnchorPane>
                   </content>
